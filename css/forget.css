@@ -1,0 +1,90 @@
+html, body {
+    height: 100%;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    min-height: 600px;
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+}
+@media (max-width: 900px) {
+    html, body {
+        font-size: 14px;
+    }
+}
+@media (max-width: 750px) {
+    html, body {
+        font-size: 12px;
+    }
+}
+@media (max-width: 600px) {
+    html, body {
+        font-size: 10px;
+    }
+}
+
+body {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    background: #3F4E67;
+}
+
+html, body {
+    min-height: 500px;
+}
+
+body {
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+
+.forget {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    background: white;
+    border-radius: 10px;
+    padding: 50px;
+    -webkit-box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.4);
+    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.4);
+}
+.forget h2 {
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+#logo_container {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 0;
+    max-height: 80px;
+}
+#logo_container img {
+    margin-top: 20px;
+    width: 100%;
+}

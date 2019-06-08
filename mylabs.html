@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Physics Leti</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-fixed-top navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" href="student.html" onclick="set_main()">Физика ЛЭТИ</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown active">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLinkUser" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        <b>Профиль</b>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLinkUser">
+                        <a class="dropdown-item" href="student.html">Главная страница</a>
+                        <a class="dropdown-item" href="#">Настройки</a>
+                        <a class="dropdown-item" href="#" onclick="localStorage.setItem('token', '-');localStorage.setItem('userType', '-');location.href = 'index.html'">Выйти</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<main role="main" class="flex-shrink-0">
+    <div id="main_content">
+        <div class="container" id="mylab">
+        </div>
+    </div>
+</main>
+
+<footer class="footer mt-auto py-3">
+    <div class="container">
+        <span class="text-muted">Place sticky footer content here.</span>
+    </div>
+</footer>
+
+
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/notify.js"></script>
+<script src="js/mylab.js"></script>
+<script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
+<script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+        apiKey: "AIzaSyAe6-tsFJsC9K39I7OynYggm0ppxi6OlVs",
+        authDomain: "physics-241917.firebaseapp.com",
+        databaseURL: "https://physics-241917.firebaseio.com",
+        projectId: "physics-241917",
+        storageBucket: "physics-241917.appspot.com",
+        messagingSenderId: "518136519132",
+        appId: "1:518136519132:web:28503b9780455f18"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+</script>
+</body>
+</html>

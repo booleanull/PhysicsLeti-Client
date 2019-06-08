@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Physics Leti</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="modal fade" id="teacherModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="teacherModalLongTitle">Добавление группы</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="teacherin">Введите номер группы:</label>
+                    <input type="number" id="teacherin" class="form-control" required="">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="send_create_teacher()">
+                    Добавить
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<nav class="navbar navbar-expand-lg navbar-fixed-top navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" href="#" onclick="">Физика ЛЭТИ</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown active">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLinkUser" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        <b>Профиль</b>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLinkUser">
+                        <a class="dropdown-item" href="#">Настройки</a>
+                        <a class="dropdown-item" href="#"
+                           onclick="localStorage.setItem('token', '-');localStorage.setItem('userType', '-');location.href = 'index.html'">Выйти</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="modal fade" id="addModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addModalLongTitle">Добавление работы</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="titlelab">Название лабораторной работы:</label>
+                    <input type="text" id="titlelab" class="form-control" required="">
+                </div>
+                <div class="form-group">
+                    <label for="themelab">Раздел лабораторной работы:</label>
+                    <input type="text" id="themelab" class="form-control" required="">
+                </div>
+                <div class="form-group">
+                    <label for="descriptionlab">Описание лабораторной работы:</label>
+                    <input type="text" id="descriptionlab" class="form-control" required="">
+                </div>
+                <div class="form-group">
+                    <label for="protocollab">Формат протокола:</label>
+                    <input type="text" id="protocollab" class="form-control" required="">
+                </div>
+                <div class="form-group">
+                    <label for="linklab">Ссылка:</label>
+                    <input type="text" id="linklab" class="form-control" required="">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="send_create()">Добавить
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="changeModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="changeModalLongTitle">Редактирование работы</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="titlelabchange">Название лабораторной работы:</label>
+                    <input type="text" id="titlelabchange" class="form-control" required="">
+                </div>
+                <div class="form-group">
+                    <label for="themelabchange">Раздел лабораторной работы:</label>
+                    <input type="text" id="themelabchange" class="form-control" required="">
+                </div>
+                <div class="form-group">
+                    <label for="descriptionlabchange">Описание лабораторной работы:</label>
+                    <input type="text" id="descriptionlabchange" class="form-control" required="">
+                </div>
+                <div class="form-group">
+                    <label for="protocollabchange">Формат протокола:</label>
+                    <input type="text" id="protocollabchange" class="form-control" required="">
+                </div>
+                <div class="form-group">
+                    <label for="linklabchange">Ссылка:</label>
+                    <input type="text" id="linklabchange" class="form-control" required="">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="send_update()">Сохранить
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<main>
+    <div class="container">
+        <div class="btn-group btn-group-toggle text-center buttons_container" data-toggle="buttons">
+            <label onclick="onload_page()" class="btn btn-primary active">
+                <input type="radio" name="options" id="option1" autocomplete="off" checked> Активация пользователей
+            </label>
+            <label onclick="slide_labs()" class="btn btn-primary">
+                <input type="radio" name="options" id="option2" autocomplete="off"> Редактирование работ
+            </label>
+            <label onclick="slide_teacher() " class="btn btn-primary">
+                <input type="radio" name="options" id="option3" autocomplete="off"> Контроль преподавателей
+            </label>
+        </div>
+        <div id="inner_container">
+
+        </div>
+    </div>
+</main>
+
+
+<footer class="footer mt-auto py-3">
+    <div class="container">
+        <span class="text-muted">Place sticky footer content here.</span>
+    </div>
+</footer>
+
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/notify.js"></script>
+<script src="js/admin.js"></script>
+
+</body>
+</html>
