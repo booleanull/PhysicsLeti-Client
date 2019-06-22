@@ -19,7 +19,7 @@ PhysicsLeti is a client server application for interaction between several user 
 * User
 > The user can view laboratory work, perform them.
 ## License
-[MIT](https://github.com/booleanull/PhysicsLeti-Backend/blob/master/LICENSE)
+[MIT](https://github.com/booleanull/PhysicsLeti-Frontend/blob/master/LICENSE)
 ```
 MIT License
 
