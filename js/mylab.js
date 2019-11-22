@@ -1,10 +1,10 @@
 let xmlHttp = new XMLHttpRequest();
-
+const URL = 'http://83.166.240.14:8080';
 // When our page is Ready
 window.onload = onload_page();
 
 function onload_page() {
-    ajax_post("http://83.166.247.138:8080/api/lab/my", null, function () {
+    ajax_post(`${URL}/api/lab/my`, null, function () {
         if (xmlHttp.status === 200 && xmlHttp.readyState === 4) {
             try {
                 let data = JSON.parse(xmlHttp.responseText);
@@ -46,7 +46,7 @@ function send_answer(id) {
             let jsonObject = {};
             jsonObject.id = id;
             jsonObject.answer = downloadURL;
-            ajax_post("http://83.166.247.138:8080/api/lab/answer", jsonObject, function () {
+            ajax_post(`${URL}/api/lab/answer`, jsonObject, function () {
                 if (xmlHttp.status === 200 && xmlHttp.readyState === 4) {
                     try {
                         let data = JSON.parse(xmlHttp.responseText);

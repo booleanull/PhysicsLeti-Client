@@ -1,6 +1,6 @@
 var teacher = document.getElementById('teacher');
 var divNumber = document.getElementById('isStudent');
-
+const URL = 'http://83.166.240.14:8080';
 var type_tmp = 0;
 
 function showNumber() {
@@ -69,5 +69,5 @@ function ajax_post(url)
 
 window.addEventListener('submit', function (e) {
     e.preventDefault();
-    ajax_post("http://83.166.247.138:8080/register");
+    ajax_post(`${URL}/register`);
 });
