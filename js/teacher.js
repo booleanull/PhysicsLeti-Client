@@ -1,12 +1,12 @@
 console.log('ok');
 document.body.style.visibility = "visible";
-
+const URL = 'http://83.166.240.14:8080';
 let xmlHttp = new XMLHttpRequest();
 
 window.onload = onload_page();
 
 function onload_page() {
-    ajax_post("http://83.166.247.138:8080/api/teach", null, function () {
+    ajax_post(`${URL}/api/teach`, null, function () {
         if (xmlHttp.status === 200 && xmlHttp.readyState === 4) {
             try {
                 let data = JSON.parse(xmlHttp.responseText);
@@ -26,7 +26,7 @@ function send_mark(id) {
     jsonObject.mark = document.getElementById(id).value;
     console.log(jsonObject);
 
-    ajax_post("http://83.166.247.138:8080/api/teach/mark", jsonObject, function () {
+    ajax_post(`${URL}/api/teach/mark`, jsonObject, function () {
         if (xmlHttp.status === 200 && xmlHttp.readyState === 4) {
             onload_page()
             $.notify("Ваша оценка была успешно выставлена.", {type: 'success'});

@@ -1,5 +1,5 @@
 var xml = new XMLHttpRequest();
-
+const URL = 'http://83.166.240.14:8080';
 var upd_id;
 var create_id;
 
@@ -8,7 +8,7 @@ window.onload = onload_page();
 
 function onload_page() {
     const xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("POST", "http://83.166.247.138:8080/api/confirm", true);
+    xmlHttp.open("POST", `${URL}/api/confirm`, true);
     xmlHttp.setRequestHeader("Content-Type", "application/json");
 
     xmlHttp.setRequestHeader("token", localStorage.getItem('token'));
@@ -30,7 +30,7 @@ function onload_page() {
 
 function slide_labs() {
     const xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("POST", "http://83.166.247.138:8080/api/lab", true);
+    xmlHttp.open("POST", `${URL}/api/lab`, true);
     xmlHttp.setRequestHeader("Content-Type", "application/json");
 
     // TODO: Enter token
@@ -53,7 +53,7 @@ function slide_labs() {
 
 function slide_teacher() {
     const xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("POST", "http://83.166.247.138:8080/api/teachers", true);
+    xmlHttp.open("POST", `${URL}/api/teachers`, true);
     xmlHttp.setRequestHeader("Content-Type", "application/json");
 
     // TODO: Enter token
@@ -81,9 +81,9 @@ function send_accept(id, type) {
 
     let url = ""
     if (type === true) {
-        url = "http://83.166.247.138:8080/api/accept"
+        url = `${URL}/api/accept`
     } else {
-        url = "http://83.166.247.138:8080/api/reject"
+        url = `${URL}/api/reject`
     }
 
     ajax_post(url, jsonObject, function () {
@@ -99,7 +99,7 @@ function send_delete(id) {
     let jsonObject = {};
     jsonObject.id = id;
 
-    ajax_post("http://83.166.247.138:8080/api/lab/delete", jsonObject, function () {
+    ajax_post(`${URL}/api/lab/delete`, jsonObject, function () {
         if (xml.status === 200 && xml.readyState === 4) {
             slide_labs()
         } else {
@@ -116,7 +116,7 @@ function send_create() {
     jsonObject.protocol = document.getElementById('protocollab').value;
     jsonObject.link = document.getElementById('linklab').value;
 
-    ajax_post("http://83.166.247.138:8080/api/lab/create", jsonObject, function () {
+    ajax_post(`${URL}/api/lab/create`, jsonObject, function () {
         if (xml.status === 200 && xml.readyState === 4) {
             slide_labs()
         } else {
@@ -140,7 +140,7 @@ function send_update() {
     jsonObject.protocol = document.getElementById('protocollabchange').value;
     jsonObject.link = document.getElementById('linklabchange').value;
 
-    ajax_post("http://83.166.247.138:8080/api/lab/update", jsonObject, function () {
+    ajax_post(`${URL}/api/lab/update`, jsonObject, function () {
         if (xml.status === 200 && xml.readyState === 4) {
             slide_labs()
         } else {
@@ -163,7 +163,7 @@ function send_create_teacher() {
     jsonObject.groupNumber = document.getElementById('teacherin').value;
     jsonObject.id = create_id;
 
-    ajax_post("http://83.166.247.138:8080/api/teachers/set", jsonObject, function () {
+    ajax_post(`${URL}/api/teachers/set`, jsonObject, function () {
         if (xml.status === 200 && xml.readyState === 4) {
             slide_teacher()
         } else {
@@ -183,7 +183,7 @@ function send_delete_teacher(id, groupNumber) {
     jsonObject.groupNumber = groupNumber
     jsonObject.id = id
 
-    ajax_post("http://83.166.247.138:8080/api/teachers/delete", jsonObject, function () {
+    ajax_post(`${URL}/api/teachers/delete`, jsonObject, function () {
         if (xml.status === 200 && xml.readyState === 4) {
             slide_teacher()
         } else {

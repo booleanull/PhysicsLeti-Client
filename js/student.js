@@ -1,11 +1,11 @@
 let xmlHttp = new XMLHttpRequest();
 let labworks = undefined;
-
+const URL = 'http://83.166.240.14:8080';
 // When our page is Ready
 window.onload = onload_page();
 
 function onload_page() {
-    ajax_post("http://83.166.247.138:8080/api/lab", null, function () {
+    ajax_post(`${URL}/api/lab`, null, function () {
         if (xmlHttp.status === 200 && xmlHttp.readyState === 4) {
             try {
                 let data = JSON.parse(xmlHttp.responseText);
@@ -24,7 +24,7 @@ function send_lab(id) {
     jsonObject.id = id;
     jsonObject.protocol = document.getElementById("table").innerHTML;
 
-    ajax_post("http://83.166.247.138:8080/api/lab/protocol", jsonObject, function () {
+    ajax_post(`${URL}/api/lab/protocol`, jsonObject, function () {
         if (xmlHttp.status === 200 && xmlHttp.readyState === 4) {
             try {
                 let data = JSON.parse(xmlHttp.responseText);
@@ -137,7 +137,7 @@ function set_labwork(id) {
                     '      <table class="table table-bordered table-responsive-md table-striped text-center">\n' +
                     '        <thead>\n' +
                     '          <tr id="width">\n' +
-                                    toptable +  
+                                    toptable +
                     '          </tr>\n' +
                     '        </thead>\n' +
                     '        <tbody>\n' +

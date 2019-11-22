@@ -1,4 +1,4 @@
-
+const URL = 'http://83.166.240.14:8080';
 window.onload = function () {
     if (localStorage.getItem('userType') === '0')
         location.href = 'student.html';
@@ -67,5 +67,5 @@ function ajax_post(url)
 }
 
 document.getElementById('enter').addEventListener('click', function () {
-    ajax_post("http://83.166.247.138:8080/auth");
+    ajax_post(`${URL}/auth`);
 });
