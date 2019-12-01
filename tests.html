@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Physics Leti</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+
+</head>
+<body>
+
+<div id="app">
+    <v-app>
+        <v-container>
+            <v-row>
+                Создание теста:
+            </v-row>
+            <v-row>
+                <v-col>
+                    <v-text-field label="Название теста" v-model="testTitle"></v-text-field>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col>
+                    <v-text-field label="Кол-во вопросов в тесте" type="number"
+                                  v-model="countOfQuestions"></v-text-field>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col>
+                    <v-btn color="primary" @click="createQuestions">Подтвердить</v-btn>
+                </v-col>
+            </v-row>
+            <v-row v-for="question in questions" :key="question.id" :q_id="question.id">
+                <v-col>
+                    <question @save-question="saveQuestion" :q_id="question.id + 1"></question>
+                </v-col>
+            </v-row>
+        </v-container>
+    </v-app>
+</div>
+
+<script defer src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+<script defer src="js/tests.js"></script>
+</body>
+</html>

@@ -255,7 +255,7 @@ function update_labs(data) {
                 '                                </h4>\n' +
                 '                            </div>\n' +
                 '                            <div id="collapse' + labwork.id + '" class="collapse" aria-labelledby="heading' + labwork.id + '">\n' +
-                '                                <div class="card-body"><p>' + labwork.description + '</p>' + '<p>' + labwork.protocol + '</p>' + '<a href="'+ labwork.link +'">'+labwork.link+'</a>' + '<button data-toggle="modal" data-target="#changeModalCenter" class="btn btn-sm btn-primary btn-smbtn-primary float-right" onclick="send_pre_update(' + labwork.id+',\''+ labwork.title+'\',\''+ theme.theme+'\',\''+ labwork.description+'\',\''+ labwork.protocol+'\',\''+ labwork.link+'\')">' +
+                '                                <div class="card-body"><p>' + labwork.description + '</p>' + '<p>' + labwork.protocol + '</p>' + '<a href="' + labwork.link + '">' + labwork.link + '</a>' + '<button data-toggle="modal" data-target="#changeModalCenter" class="btn btn-sm btn-primary btn-smbtn-primary float-right" onclick="send_pre_update(' + labwork.id + ',\'' + labwork.title + '\',\'' + theme.theme + '\',\'' + labwork.description + '\',\'' + labwork.protocol + '\',\'' + labwork.link + '\')">' +
                 'Редактировать' +
                 '</button>' +
                 '<button class="btn-dec btn-sm btn btn-secondary btn-smbtn-secondary float-right"  onclick="send_delete(' + labwork.id + ')">' +
@@ -281,7 +281,7 @@ function update_teachers(data) {
             'Добавить группу' +
             '</button></h4></div>';
 
-        if(it.groups != undefined) {
+        if (it.groups != undefined) {
             it.groups.forEach(function (group) {
                 navigation += '<div class="card">' +
                     '<div class="card-body">' +
@@ -323,3 +323,7 @@ function update_teachers(data) {
     });
     */
 }
+function openTests() {
+    location.assign('/tests.html');
+}
+
