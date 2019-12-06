@@ -36,7 +36,7 @@
             </v-row>
             <v-row v-for="question in questions" :key="question.id" :q_id="question.id">
                 <v-col>
-                    <question @save-question="saveQuestion" :q_id="question.id + 1"></question>
+                    <question @save-question="saveQuestion" :q_id="question.id"></question>
                 </v-col>
             </v-row>
         </v-container>

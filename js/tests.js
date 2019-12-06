@@ -6,7 +6,8 @@ Vue.component('question', {
             name: '',
             variants_of_answer: null,
             count_of_variants_of_answer: null,
-            answer2type: null,
+            answer_01_type: [],
+            answer_2_type: null,
             hints: null,
             count_of_hints: null,
             score: null,
@@ -19,9 +20,8 @@ Vue.component('question', {
             setTimeout(()=>{
                 this.showAlert = false;
             }, 4000);
-            this.$emit('save-question', this.q_id, this.name, this.type, this.variants_of_answer, this.answer2type, this.hints, this.score);
+            this.$emit('save-question', this.q_id, this.name, this.type, this.variants_of_answer, this.answer_01_type, this.answer_2_type, this.hints, this.score);
         },
-
     },
     watch: {
         count_of_variants_of_answer(value) {
@@ -36,13 +36,18 @@ Vue.component('question', {
                 this.hints.push({id: i, str: ""});
             }
         },
+    },
 
+    filters: {
+        plusOne(value) {
+            return Number(value) + 1;
+        }
     },
 
     template: ` <v-form>
                     <v-alert :value="showAlert" color="success">Вопрос добавлен в тест</v-alert>
                     <v-card raised style="padding: 10px;">
-                        <h2>Вопрос №{{ q_id }}</h2>
+                        <h2>Вопрос №{{ q_id | plusOne}}</h2>
                         
                         <v-radio-group v-model="type" :mandatory="true" label="Выберите тип вопроса:">
                             <v-radio label="Один ответ" value="0"></v-radio>
@@ -50,31 +55,41 @@ Vue.component('question', {
                             <v-radio label="Открытый вопрос" value="2"></v-radio>
                         </v-radio-group>
                         
-                        <v-divider color="yellow"></v-divider>
+                        <v-divider color="blue"></v-divider>
                         <v-spacer></v-spacer>
                         
                         <v-text-field v-model="name" label="Введите вопрос"></v-text-field>
                                                 
-                        <v-divider color="yellow"></v-divider>
+                        <v-divider color="blue"></v-divider>
                         <v-spacer></v-spacer>
                         
                         <div v-if="type==0 || type==1">                 
                             <v-text-field type="number" label="Сколько вариантов ответа в вопросе?" v-model="count_of_variants_of_answer"></v-text-field>
-                            <v-text-field v-for="answer in variants_of_answer" v-model="answer.variant" label="Введите вариант ответа" :key="answer.id"></v-text-field>
+                            <ul>
+                                <li v-for="answer in variants_of_answer">
+                                    <v-text-field  v-model="answer.variant" label="Введите вариант ответа" :key="answer.id"></v-text-field>
+                                    <v-checkbox v-model="answer_01_type" :value="answer.id" label="Отметить, если это правильный ответ"></v-checkbox>
+                                </li>
+                            </ul>
+                            
                         </div>
                         <div v-else>
-                            <v-text-field v-model="answer2type" label="Введите ответ"></v-text-field>
+                            <v-text-field v-model="answer_2_type" label="Введите ответ"></v-text-field>
                         </div>
                         
-                        <v-divider color="yellow"></v-divider>
+                        <v-divider color="blue"></v-divider>
                         <v-spacer></v-spacer>  
                          
                          <div>      
                             <v-text-field type="number" label="Сколько подсказок в вопросе?" v-model="count_of_hints"></v-text-field>
-                            <v-text-field v-for="hint in hints" v-model="hint.str" label="Введите подсказку" :key="hint.id"></v-text-field>
+                            <ul>
+                                <li v-for="hint in hints">
+                                    <v-text-field v-model="hint.str" label="Введите подсказку" :key="hint.id"></v-text-field>
+                                </li>
+                            </ul>
                          </div>  
                          
-                        <v-divider color="yellow"></v-divider>
+                        <v-divider color="blue"></v-divider>
                         <v-spacer></v-spacer>
                         
                         <v-text-field v-model="score" label="Максимальный балл за ответ на вопрос"></v-text-field>
@@ -103,12 +118,13 @@ let app = new Vue({
                 });
             }
         },
-        saveQuestion(id, name, type, variants_of_answer, answer2type, hints, score) {
-            this.questions[id - 1] = {
+        saveQuestion(id, name, type, variants_of_answer, answer_01_type, answer_2_type, hints, score) {
+            this.questions[id] = {
                 name,
                 type,
                 variants_of_answer,
-                answer2type,
+                answer_01_type,
+                answer_2_type,
                 hints,
                 score
             }
