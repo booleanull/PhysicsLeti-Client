@@ -17,9 +17,6 @@ Vue.component('question', {
     methods: {
         saveQuestion() {
             this.showAlert = true;
-            setTimeout(()=>{
-                this.showAlert = false;
-            }, 4000);
             this.$emit('save-question', this.q_id, this.name, this.type, this.variants_of_answer, this.answer_01_type, this.answer_2_type, this.hints, this.score);
         },
     },
@@ -36,6 +33,9 @@ Vue.component('question', {
                 this.hints.push({id: i, str: ""});
             }
         },
+        answer_01_type(value) {
+            if (this.type==='0' && value.length > 1) value.shift();
+        }
     },
 
     filters: {
@@ -45,8 +45,7 @@ Vue.component('question', {
     },
 
     template: ` <v-form>
-                    <v-alert :value="showAlert" color="success">Вопрос добавлен в тест</v-alert>
-                    <v-card raised style="padding: 10px;">
+                  <v-card raised style="padding: 10px;">
                         <h2>Вопрос №{{ q_id | plusOne}}</h2>
                         
                         <v-radio-group v-model="type" :mandatory="true" label="Выберите тип вопроса:">
@@ -55,14 +54,8 @@ Vue.component('question', {
                             <v-radio label="Открытый вопрос" value="2"></v-radio>
                         </v-radio-group>
                         
-                        <v-divider color="blue"></v-divider>
-                        <v-spacer></v-spacer>
-                        
                         <v-text-field v-model="name" label="Введите вопрос"></v-text-field>
-                                                
-                        <v-divider color="blue"></v-divider>
-                        <v-spacer></v-spacer>
-                        
+                                             
                         <div v-if="type==0 || type==1">                 
                             <v-text-field type="number" label="Сколько вариантов ответа в вопросе?" v-model="count_of_variants_of_answer"></v-text-field>
                             <ul>
@@ -76,10 +69,7 @@ Vue.component('question', {
                         <div v-else>
                             <v-text-field v-model="answer_2_type" label="Введите ответ"></v-text-field>
                         </div>
-                        
-                        <v-divider color="blue"></v-divider>
-                        <v-spacer></v-spacer>  
-                         
+                                                
                          <div>      
                             <v-text-field type="number" label="Сколько подсказок в вопросе?" v-model="count_of_hints"></v-text-field>
                             <ul>
@@ -88,13 +78,10 @@ Vue.component('question', {
                                 </li>
                             </ul>
                          </div>  
-                         
-                        <v-divider color="blue"></v-divider>
-                        <v-spacer></v-spacer>
-                        
-                        <v-text-field v-model="score" label="Максимальный балл за ответ на вопрос"></v-text-field>
-                        
-                        <v-btn @click="saveQuestion" color="success">Добавить вопрос</v-btn>
+                                                
+                         <v-text-field v-model="score" label="Максимальный балл за ответ на вопрос"></v-text-field>
+                         <v-alert :value="showAlert" color="success">Вопрос добавлен в тест</v-alert>
+                         <v-btn @click="saveQuestion" color="success">Добавить вопрос</v-btn>
                     </v-card>
                 </v-form> `
 });
@@ -104,24 +91,34 @@ let app = new Vue({
     el: "#app",
     vuetify: new Vuetify(),
     data: {
-        message: 'Test message',
-        countOfQuestions: 0,
+        countOfQuestions: null,
         testTitle: "",
         questions: [],
+        amountOfAdded : 0,
+        addedQuestions: [],
+        sended: false,
     },
 
     computed: {
         id() {
             return uuidv4() + '_' + this.testTitle;
         },
-        //TODO location.hostname || directconnect || домен Шейнмана
         url() {
-            return `${location.hostname}/test?id=${this.id}`;
-        }
+            return `./testing.html?id=${this.id}`;
+        },
+        userType() {
+            return localStorage.getItem('userType');
+        },
+    },
+
+    created() {
+      if (this.userType !== '2') location.assign('/index.html');
     },
 
     methods: {
         createQuestions() {
+            this.amountOfAdded = 0;
+            this.addedQuestions = [];
             this.questions = [];
             for (let i = 0; i < this.countOfQuestions; i++) {
                 this.questions.push({
@@ -130,24 +127,34 @@ let app = new Vue({
             }
         },
         saveQuestion(id, name, type, variants_of_answer, answer_01_type, answer_2_type, hints, score) {
+            if (this.addedQuestions.indexOf(parseInt(id)) === -1){
+                this.amountOfAdded++;
+                this.addedQuestions.push(parseInt(id));
+            }
+
             this.questions[id] = {
+                id: id,
                 name,
                 type,
-                variants_of_answer,
-                answer_01_type,
-                answer_2_type,
-                hints,
+                variants_of_answer: variants_of_answer ? variants_of_answer.map(el=>{
+                    return el.variant;
+                }) : null,
+                answer: answer_2_type || answer_01_type.sort(),
+                hints: hints ? hints.map(el=>{
+                    return el.str;
+                }) : null,
                 score
-            }
+            };
         },
 
         async sendTest() {
-            firebase.database().ref(`tests/${this.id}`).set({
+            await firebase.database().ref(`tests/${this.id}`).set({
                 title: this.testTitle,
                 questions: this.questions,
                 url: this.url,
             });
             console.log('Sended!');
+            this.sended = true;
         }
     },
 });

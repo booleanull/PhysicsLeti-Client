@@ -13,8 +13,8 @@
 <body>
 
 <div id="app">
-    <v-app>
-        <v-container>
+    <v-app v-if="userType==='2'">
+        <v-container v-if="!sended">
             <v-row>
                 Создание теста:
             </v-row>
@@ -25,8 +25,7 @@
             </v-row>
             <v-row>
                 <v-col>
-                    <v-text-field label="Кол-во вопросов в тесте" type="number"
-                                  v-model="countOfQuestions"></v-text-field>
+                    <v-text-field label="Кол-во вопросов в тесте" type="number" v-model="countOfQuestions"></v-text-field>
                 </v-col>
             </v-row>
             <v-row>
@@ -39,11 +38,18 @@
                     <question @save-question="saveQuestion" :q_id="question.id"></question>
                 </v-col>
             </v-row>
-            <v-row>
-                <v-col>
-                    <v-btn v-if="questions.length" color="primary" @click="sendTest">Сохранить тест</v-btn>
-                </v-col>
-            </v-row>
+            <div v-if="questions.length">
+                <v-row>
+                    <v-alert style="color: white" color="primary">Добавленно вопросов: {{ amountOfAdded }}</v-alert>
+                </v-row>
+                <v-row>
+                    <v-btn color="primary" @click="sendTest">Сохранить тест</v-btn>
+                </v-row>
+            </div>
+        </v-container>
+        <v-container v-else="">
+            <label for="url">Ссылка на тест</label>
+            <v-text-field :value="url" id="url"></v-text-field>
         </v-container>
     </v-app>
 </div>
