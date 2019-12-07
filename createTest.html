@@ -39,12 +39,34 @@
                     <question @save-question="saveQuestion" :q_id="question.id"></question>
                 </v-col>
             </v-row>
+            <v-row>
+                <v-col>
+                    <v-btn v-if="questions.length" color="primary" @click="sendTest">Сохранить тест</v-btn>
+                </v-col>
+            </v-row>
         </v-container>
     </v-app>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-database.js"></script>
+
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyCThJqusDZuXq-6I5yhY59-3tSUv6Dt3-U",
+        authDomain: "physicsletitests.firebaseapp.com",
+        databaseURL: "https://physicsletitests.firebaseio.com",
+        projectId: "physicsletitests",
+        storageBucket: "physicsletitests.appspot.com",
+        messagingSenderId: "243413212508",
+        appId: "1:243413212508:web:460185236af63c80abb599",
+        measurementId: "G-BLHBX5X1K1"
+    };
+    firebase.initializeApp(firebaseConfig);
+</script>
+<script src="http://wzrd.in/standalone/uuid%2Fv4@latest"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
-<script defer src="js/tests.js"></script>
+<script defer src="js/createTest.js"></script>
 </body>
 </html>

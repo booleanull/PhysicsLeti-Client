@@ -324,6 +324,6 @@ function update_teachers(data) {
     */
 }
 function openTests() {
-    location.assign('/tests.html');
+    location.assign('./createTest.html');
 }
 

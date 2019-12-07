@@ -109,6 +109,17 @@ let app = new Vue({
         testTitle: "",
         questions: [],
     },
+
+    computed: {
+        id() {
+            return uuidv4() + '_' + this.testTitle;
+        },
+        //TODO location.hostname || directconnect || домен Шейнмана
+        url() {
+            return `${location.hostname}/test?id=${this.id}`;
+        }
+    },
+
     methods: {
         createQuestions() {
             this.questions = [];
@@ -128,8 +139,15 @@ let app = new Vue({
                 hints,
                 score
             }
+        },
+
+        async sendTest() {
+            firebase.database().ref(`tests/${this.id}`).set({
+                title: this.testTitle,
+                questions: this.questions,
+                url: this.url,
+            });
+            console.log('Sended!');
         }
     },
-
-
 });
