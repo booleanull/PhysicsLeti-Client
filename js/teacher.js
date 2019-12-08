@@ -1,6 +1,6 @@
 console.log('ok');
 document.body.style.visibility = "visible";
-const URL = 'http://83.166.240.14:8080';
+const URL = 'http://localhost:8080';
 let xmlHttp = new XMLHttpRequest();
 
 window.onload = onload_page();
