@@ -1,5 +1,5 @@
 let xmlHttp = new XMLHttpRequest();
-const URL = 'http://83.166.240.14:8080';
+const URL = 'http://localhost:8080';
 // When our page is Ready
 window.onload = onload_page();
 
@@ -46,6 +46,8 @@ function send_answer(id) {
             let jsonObject = {};
             jsonObject.id = id;
             jsonObject.answer = downloadURL;
+            jsonObject.coeff = document.getElementById('coeff').value;
+            jsonObject.coeffError = document.getElementById('coefferror').value;
             ajax_post(`${URL}/api/lab/answer`, jsonObject, function () {
                 if (xmlHttp.status === 200 && xmlHttp.readyState === 4) {
                     try {
@@ -82,6 +84,7 @@ function ajax_post(url, json, func) {
 
 function update_list(data) {
     var navigation = '';
+    console.log(data);
     data.forEach(function (types) {
         var title = ""
         var typecontent = ""
@@ -104,12 +107,24 @@ function update_list(data) {
                 '                                </h4>\n' +
                 '                            </div>\n' +
                 '                            <div id="collapse' + labwork.id + '" class="collapse" aria-labelledby="heading' + labwork.id + '">\n' +
-                '                                <div class="card-body"><p>' + labwork.description + '</p>' + labwork.protocol;
+                '                                <div class="card-body"><p>' + labwork.description + '</p>' + labwork.protocol +                     '<p><a class="btn btn-primary btn-lg" href="'+ labwork.testEnd + '" role="button" target="_blank">Страница выходного теста</a></p>' +
+                '<div class="form-group">\n';
+            if(labwork.autoMark && types.type === 0) {
+                navigation +=
+                '                    <label for="coeff">Результат:</label>\n' +
+                '                    <input type="number" id="coeff" class="form-control" required="">\n' +
+                '                </div>' +
+                '<div class="form-group">\n' +
+                '                    <label for="coefferror">Погрешность:</label>\n' +
+                '                    <input type="number" id="coefferror" class="form-control" required="">\n' +
+                '                </div>';
+            }
+
 
             if (types.type === 0) {
                 typecontent = '<input id="file-upload'+ labwork.id + '" type="file" accept=".docx, .pdf, .doc"><button id="button_send" type="button" class="btn btn-primary float-right" onclick="send_answer(' + labwork.id + ')">Отправить отчет</button>'
             } else if (types.type === 1) {
-                typecontent = '<a class="float-right btn btn-primary" target="_blank" href="'+ labwork.answer +'" download>Скачать отчет</a> Еще не оцененно'
+                typecontent = '<a class="float-right btn btn-primary" target="_blank" href="'+ labwork.answer +'" download>Скачать отчет</a> Еще не оценено'
             } else {
                 typecontent = '<button id="button_send" type="button" class="btn btn-primary float-right" onclick="send_lab(' + labwork.id + ')">Скачать отчет</button><h3 class="float-left">Ваша оценка: '+ labwork.mark +'</h3>'
             }

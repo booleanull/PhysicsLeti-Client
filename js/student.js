@@ -1,6 +1,6 @@
 let xmlHttp = new XMLHttpRequest();
 let labworks = undefined;
-const URL = 'http://83.166.240.14:8080';
+const URL = 'http://localhost:8080';
 // When our page is Ready
 window.onload = onload_page();
 
@@ -126,6 +126,8 @@ function set_labwork(id) {
                     '            <h1>' + lab.title + '</h1>' +
                     '            <p>' + lab.description + '</p>' +
                     '<a class="btn btn-primary btn-lg" href="'+ lab.link + '" role="button" target="_blank">Страница установки</a>' +
+                    '<a class="btn btn-primary btn-lg" href="'+ lab.info + '" role="button" target="_blank">Страница методических указаний</a>' +
+                    '<a class="btn btn-primary btn-lg" href="'+ lab.testStart + '" role="button" target="_blank">Страница входного тестирования</a>' +
                     '        </div></div>' +
                     '<div class="container">' +
                     '<div class="card">\n' +

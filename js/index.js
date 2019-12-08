@@ -1,4 +1,4 @@
-const URL = 'http://83.166.240.14:8080';
+const URL = 'http://localhost:8080';
 window.onload = function () {
     if (localStorage.getItem('userType') === '0')
         location.href = 'student.html';
