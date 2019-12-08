@@ -1,5 +1,5 @@
 var xml = new XMLHttpRequest();
-const URL = 'http://83.166.240.14:8080';
+const URL = 'http://localhost:8080';
 var upd_id;
 var create_id;
 
@@ -115,6 +115,21 @@ function send_create() {
     jsonObject.description = document.getElementById('descriptionlab').value;
     jsonObject.protocol = document.getElementById('protocollab').value;
     jsonObject.link = document.getElementById('linklab').value;
+    jsonObject.info = document.getElementById('linkinfolab').value;
+    jsonObject.testStart = document.getElementById('teststartlab').value;
+    jsonObject.testEnd = document.getElementById('testendlab').value;
+    jsonObject.autoTest = document.getElementById('automarklab').checked;
+    jsonObject.coeff = parseFloat(document.getElementById('coefflab').value);
+    jsonObject.coeffError = parseFloat(document.getElementById('coefferrorlab').value);
+    jsonObject.fiveCoeff = parseFloat(document.getElementById('fivecoefflab').value);
+    jsonObject.fiveCoeffError = parseFloat(document.getElementById('fivecoefferrorlab').value);
+    jsonObject.fourCoeff = parseFloat(document.getElementById('fourcoefflab').value);
+    jsonObject.fourCoeffError = parseFloat(document.getElementById('fourcoefferrorlab').value);
+    jsonObject.threeCoeff = parseFloat(document.getElementById('threecoefflab').value);
+    jsonObject.threeCoeffError = parseFloat(document.getElementById('threecoefferrorlab').value);
+
+    console.log(jsonObject);
+    console.log( document.getElementById('automarklab').value);
 
     ajax_post(`${URL}/api/lab/create`, jsonObject, function () {
         if (xml.status === 200 && xml.readyState === 4) {
@@ -129,6 +144,18 @@ function send_create() {
     document.getElementById('descriptionlab').value = "";
     document.getElementById('protocollab').value = "";
     document.getElementById('linklab').value = "";
+    document.getElementById('linkinfolab').value = "";
+    document.getElementById('teststartlab').value = "";
+    document.getElementById('testendlab').value = "";
+    document.getElementById('automarklab').checked = false;
+    document.getElementById('coefflab').value = "";
+    document.getElementById('coefferrorlab').value = "";
+    document.getElementById('fivecoefflab').value = "";
+    document.getElementById('fivecoefferrorlab').value = "";
+    document.getElementById('fourcoefflab').value = "";
+    document.getElementById('fourcoefferrorlab').value = "";
+    document.getElementById('threecoefflab').value = "";
+    document.getElementById('threecoefferrorlab').value = "";
 }
 
 function send_update() {
@@ -139,6 +166,20 @@ function send_update() {
     jsonObject.description = document.getElementById('descriptionlabchange').value;
     jsonObject.protocol = document.getElementById('protocollabchange').value;
     jsonObject.link = document.getElementById('linklabchange').value;
+    jsonObject.info = document.getElementById('linkinfolabchange').value;
+    jsonObject.testStart = document.getElementById('teststartlabchange').value;
+    jsonObject.testEnd = document.getElementById('testendlabchange').value;
+    jsonObject.autoMark = document.getElementById('automarklabchange').value;
+    jsonObject.coeff = parseFloat(document.getElementById('coefflabchange').value);
+    jsonObject.coeffError = parseFloat(document.getElementById('coefferrorlabchange').value);
+    jsonObject.fiveCoeff = parseFloat(document.getElementById('fivecoefflabchange').value);
+    jsonObject.fiveCoeffError = parseFloat(document.getElementById('fivecoefferrorlabchange').value);
+    jsonObject.fourCoeff = parseFloat(document.getElementById('fourcoefflabchange').value);
+    jsonObject.fourCoeffError = parseFloat(document.getElementById('fourcoefferrorlabchange').value);
+    jsonObject.threeCoeff = parseFloat(document.getElementById('threecoefflabchange').value);
+    jsonObject.threeCoeffError = parseFloat(document.getElementById('threecoefferrorlabchange').value);
+
+    console.log(jsonObject);
 
     ajax_post(`${URL}/api/lab/update`, jsonObject, function () {
         if (xml.status === 200 && xml.readyState === 4) {
@@ -149,13 +190,25 @@ function send_update() {
     })
 }
 
-function send_pre_update(id, title, theme, description, protocol, link) {
+function send_pre_update(id, title, theme, description, protocol, link, info, testStart, testEnd, autoMark, coeff, coeffError, fiveCoeff, fiveCoeffError, fourCoeff, fourCoeffError, threeCoeff, threeCoeffError) {
     upd_id = id;
     document.getElementById('titlelabchange').value = title;
     document.getElementById('themelabchange').value = theme;
     document.getElementById('descriptionlabchange').value = description;
     document.getElementById('protocollabchange').value = protocol;
     document.getElementById('linklabchange').value = link;
+    document.getElementById('linkinfolabchange').value = info;
+    document.getElementById('teststartlabchange').value = testStart;
+    document.getElementById('testendlabchange').value = testEnd;
+    document.getElementById('automarklabchange').value = autoMark;
+    document.getElementById('coefflabchange').value = coeff;
+    document.getElementById('coefferrorlabchange').value = coeffError;
+    document.getElementById('fivecoefflabchange').value = fiveCoeff;
+    document.getElementById('fivecoefferrorlabchange').value = fiveCoeffError;
+    document.getElementById('fourcoefflabchange').value = fourCoeff;
+    document.getElementById('fourcoefferrorlabchange').value = fourCoeffError;
+    document.getElementById('threecoefflabchange').value = threeCoeff;
+    document.getElementById('threecoefferrorlabchange').value = threeCoeffError;
 }
 
 function send_create_teacher() {
@@ -255,7 +308,7 @@ function update_labs(data) {
                 '                                </h4>\n' +
                 '                            </div>\n' +
                 '                            <div id="collapse' + labwork.id + '" class="collapse" aria-labelledby="heading' + labwork.id + '">\n' +
-                '                                <div class="card-body"><p>' + labwork.description + '</p>' + '<p>' + labwork.protocol + '</p>' + '<a href="'+ labwork.link +'">'+labwork.link+'</a>' + '<button data-toggle="modal" data-target="#changeModalCenter" class="btn btn-sm btn-primary btn-smbtn-primary float-right" onclick="send_pre_update(' + labwork.id+',\''+ labwork.title+'\',\''+ theme.theme+'\',\''+ labwork.description+'\',\''+ labwork.protocol+'\',\''+ labwork.link+'\')">' +
+                '                                <div class="card-body"><p>' + labwork.description + '</p>' + '<p>' + labwork.protocol + '</p>' + '<a href="'+ labwork.link +'">'+labwork.link+'</a>' + '<button data-toggle="modal" data-target="#changeModalCenter" class="btn btn-sm btn-primary btn-smbtn-primary float-right" onclick="send_pre_update(' + labwork.id+',\''+ labwork.title+'\',\''+ theme.theme+'\',\''+ labwork.description+'\',\''+ labwork.protocol+'\',\''+ labwork.link+'\',\''+ labwork.info+'\',\''+ labwork.testStart+'\',\''+ labwork.testEnd+'\',\''+ labwork.autoMark+'\',\''+ labwork.coeff+'\',\''+ labwork.coeffError+'\',\''+ labwork.fiveCoeff+'\',\''+ labwork.fiveCoeffError+'\',\''+ labwork.fourCoeff+'\',\''+ labwork.fourCoeffError+'\',\''+ labwork.threeCoeff+'\',\''+ labwork.threeCoeffError+'\')">' +
                 'Редактировать' +
                 '</button>' +
                 '<button class="btn-dec btn-sm btn btn-secondary btn-smbtn-secondary float-right"  onclick="send_delete(' + labwork.id + ')">' +

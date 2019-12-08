@@ -32,3 +32,8 @@ body {
 .btn-dec {
     margin-right: 10px;
 }
+
+.btn-lg {
+    margin-top: 8px;
+    margin-right: 8px;
+}
