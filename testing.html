@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Physics Leti</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+
+</head>
+<body>
+
+<div id="app">
+  <v-app>
+    <div v-if="Boolean(error)" class="text-center">
+      <h1>{{ error }}</h1>
+    </div>
+
+    <v-container  v-else-if="!testStarted">
+      <div class="text-center mb-4">
+        <h1>{{ test.title }}</h1>
+      </div>
+      <div class="text-center">
+        <v-btn v-if="test" color="primary" @click="testStarted = true">Начать тест</v-btn>
+      </div>
+    </v-container>
+
+    <v-container v-else-if="!testFinished">
+      <v-card class="pa-4">
+        <div>
+          <h3>{{ currentQuestion.name }}</h3>
+        </div>
+        <p v-if="Boolean(currentHint)" class="green--text text--lighten-1">
+          {{ currentHint }}
+        </p>
+  
+        <div v-if="isType(0)">
+          <v-radio-group v-model="answers[currentQuestionNumber - 1]">
+            <v-radio
+              class="mb-4"
+              v-for="(variant, index) of currentQuestion.variants_of_answer"
+              :key="index"
+              :label="variant"
+              :value="index">
+            </v-radio>
+          </v-radio-group>
+        </div>
+  
+        <div v-else-if="isType(1)">
+          <v-checkbox 
+            v-for="(variant, index) of currentQuestion.variants_of_answer"
+            :key="index"
+            v-model="answers[currentQuestionNumber - 1]"
+            :label="variant"
+            :value="index">
+          </v-checkbox>
+        </div>
+  
+        <div v-else-if="isType(2)">
+          <v-text-field 
+            class="mt-4 mb-4"
+            v-model="answers[currentQuestionNumber - 1]"
+            outlined
+            label="Введите  ответ">
+          </v-text-field>
+        </div>
+  
+        <div class="text-center">
+          <v-pagination
+            v-model="currentQuestionNumber"
+            :length="test.questions.length"
+            :page="currentQuestionNumber"
+            :total-visible="test.questions.length">
+          </v-pagination>
+          <v-btn class="mt-2" color="error" @click="finishTest">Завершить прохождение</v-btn>
+        </div>
+      </v-card>
+    </v-container>
+
+    <v-container v-else>
+      <div class="text-center">
+        <h1>Ваш результат: {{ getScore }}</h1>
+        <h3>При подсчете учитывались предыдущие попытки</h3>
+      <div class="text-center">
+    </v-container>
+  </v-app>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-database.js"></script>
+
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyCThJqusDZuXq-6I5yhY59-3tSUv6Dt3-U",
+        authDomain: "physicsletitests.firebaseapp.com",
+        databaseURL: "https://physicsletitests.firebaseio.com",
+        projectId: "physicsletitests",
+        storageBucket: "physicsletitests.appspot.com",
+        messagingSenderId: "243413212508",
+        appId: "1:243413212508:web:460185236af63c80abb599",
+        measurementId: "G-BLHBX5X1K1"
+    };
+    firebase.initializeApp(firebaseConfig);
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+<script defer src="js/testing.js"></script>
+</body>
+</html>
