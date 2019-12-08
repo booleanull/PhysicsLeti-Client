@@ -15,10 +15,13 @@ function takeData() {
     return jsonObject;
 }
 
-function saveToken(token, type) {
+function saveToken(token, type, id, name) {
     window.localStorage.setItem('token', token);
     window.localStorage.setItem('userType', String(type));
+    window.localStorage.setItem('userId', id);
+    window.localStorage.setItem('userName', name);
 }
+
 function ajax_post(url)
 {
     var xmlhttp = new XMLHttpRequest();
@@ -30,7 +33,7 @@ function ajax_post(url)
     xmlhttp.setRequestHeader("Content-Type", "application/json");
     xmlhttp.onload = function()
     {
-        if(xmlhttp.status == 405) {
+        if (xmlhttp.status == 405) {
             $.notify("Дождитесь, когда администратор одобрит вашу заявку!", {type: 'danger'});
         }
         else if(xmlhttp.status != 200 && xmlhttp.readyState==4)
@@ -38,9 +41,9 @@ function ajax_post(url)
         else {
             try {
                 var data = JSON.parse(xmlhttp.responseText);
-                if(data.status != "error") {
+                if (data.status != "error") {
                     console.log(data.token);
-                    saveToken(data.token, data.type);
+                    saveToken(data.token, data.type, data.id, data.name);
                     switch (data.type) {
                         case 0:
                             document.location.href = "student.html";
@@ -54,11 +57,10 @@ function ajax_post(url)
                         default:
                             alert("error type");
                     }
-                }
-                else
+                } else {
                     $.notify("Ошибка входа!", {type: 'danger'});
-            }
-            catch(err) {
+                }
+            } catch(err) {
                 console.log(err.message + " in " + xmlhttp.responseText);
             }
         }

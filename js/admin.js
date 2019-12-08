@@ -334,7 +334,7 @@ function update_teachers(data) {
             'Добавить группу' +
             '</button></h4></div>';
 
-        if(it.groups != undefined) {
+        if (it.groups != undefined) {
             it.groups.forEach(function (group) {
                 navigation += '<div class="card">' +
                     '<div class="card-body">' +
@@ -376,3 +376,7 @@ function update_teachers(data) {
     });
     */
 }
+function openTests() {
+    location.assign('./createTest.html');
+}
+
