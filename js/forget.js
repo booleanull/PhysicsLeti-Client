@@ -2,6 +2,7 @@ var form = document.querySelector('form');
 var h2 = document.querySelector('h2');
 var link = document.createElement('div');
 var forget = document.querySelector('.forget');
+const URL = 'http://localhost:8080';
 
 link.innerHTML = '<a href="index.html"> Вернуться на страницу авторизации</a>';
 link.style.textAlign = 'center';
@@ -48,5 +49,5 @@ function ajax_post(url) {
 
 window.addEventListener('submit', function (e) {
     e.preventDefault();
-    ajax_post("http://83.166.247.138:8080/forget");
+    ajax_post(`${URL}/forget`);
 });

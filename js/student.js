@@ -1,11 +1,11 @@
 let xmlHttp = new XMLHttpRequest();
 let labworks = undefined;
-
+const URL = 'http://localhost:8080';
 // When our page is Ready
 window.onload = onload_page();
 
 function onload_page() {
-    ajax_post("http://83.166.247.138:8080/api/lab", null, function () {
+    ajax_post(`${URL}/api/lab`, null, function () {
         if (xmlHttp.status === 200 && xmlHttp.readyState === 4) {
             try {
                 let data = JSON.parse(xmlHttp.responseText);
@@ -24,7 +24,7 @@ function send_lab(id) {
     jsonObject.id = id;
     jsonObject.protocol = document.getElementById("table").innerHTML;
 
-    ajax_post("http://83.166.247.138:8080/api/lab/protocol", jsonObject, function () {
+    ajax_post(`${URL}/api/lab/protocol`, jsonObject, function () {
         if (xmlHttp.status === 200 && xmlHttp.readyState === 4) {
             try {
                 let data = JSON.parse(xmlHttp.responseText);
@@ -126,6 +126,8 @@ function set_labwork(id) {
                     '            <h1>' + lab.title + '</h1>' +
                     '            <p>' + lab.description + '</p>' +
                     '<a class="btn btn-primary btn-lg" href="'+ lab.link + '" role="button" target="_blank">Страница установки</a>' +
+                    '<a class="btn btn-primary btn-lg" href="'+ lab.info + '" role="button" target="_blank">Страница методических указаний</a>' +
+                    '<a class="btn btn-primary btn-lg" href="'+ lab.testStart + '" role="button" target="_blank">Страница входного тестирования</a>' +
                     '        </div></div>' +
                     '<div class="container">' +
                     '<div class="card">\n' +
@@ -137,7 +139,7 @@ function set_labwork(id) {
                     '      <table class="table table-bordered table-responsive-md table-striped text-center">\n' +
                     '        <thead>\n' +
                     '          <tr id="width">\n' +
-                                    toptable +  
+                                    toptable +
                     '          </tr>\n' +
                     '        </thead>\n' +
                     '        <tbody>\n' +
