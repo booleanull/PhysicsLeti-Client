@@ -12,12 +12,19 @@ Vue.component('question', {
             count_of_hints: null,
             score: null,
             showAlert: false,
+            showError: false,
         }
     },
     methods: {
         saveQuestion() {
-            this.showAlert = true;
-            this.$emit('save-question', this.q_id, this.name, this.type, this.variants_of_answer, this.answer_01_type, this.answer_2_type, this.hints, this.score);
+            if (this.name && this.type && (this.variants_of_answer && this.answer_01_type || this.answer_2_type) && this.score) {
+                this.showAlert = true;
+                this.showError = false;
+                this.$emit('save-question', this.q_id, this.name, this.type, this.variants_of_answer, this.answer_01_type, this.answer_2_type, this.hints, this.score);
+            }
+            else {
+                this.showError = true;
+            }
         },
     },
     watch: {
@@ -81,6 +88,7 @@ Vue.component('question', {
                                                 
                          <v-text-field v-model="score" label="Максимальный балл за ответ на вопрос"></v-text-field>
                          <v-alert :value="showAlert" color="success">Вопрос добавлен в тест</v-alert>
+                         <v-alert :value="showError" color="warning">Ошибка, есть пустые обязательные поля</v-alert>
                          <v-btn @click="saveQuestion" color="success">Добавить вопрос</v-btn>
                     </v-card>
                 </v-form> `
@@ -97,6 +105,9 @@ let app = new Vue({
         amountOfAdded : 0,
         addedQuestions: [],
         sended: false,
+        allTests: [],
+        showTests: false,
+        errorTitle: false,
     },
 
     computed: {
@@ -116,14 +127,45 @@ let app = new Vue({
     },
 
     methods: {
+        deleteTest(id) {
+            firebase.database().ref(`/tests/${id}`).remove();
+
+            this.allTests = [];
+
+            let allTests = this.allTests;
+            firebase.database().ref('/tests').once('value').then(function(data) {
+                let tests = data.val();
+                for (let item in tests) {
+                    allTests.push({id: item, title: tests[item].title, url: tests[item].url})
+                }
+            });
+        },
+
+        showAllTests() {
+            this.showTests = !this.showTests;
+            let allTests = this.allTests;
+            firebase.database().ref('/tests').once('value').then(function(data) {
+                let tests = data.val();
+                for (let item in tests) {
+                    allTests.push({id: item, title: tests[item].title, url: tests[item].url})
+                }
+            });
+        },
+
         createQuestions() {
-            this.amountOfAdded = 0;
-            this.addedQuestions = [];
-            this.questions = [];
-            for (let i = 0; i < this.countOfQuestions; i++) {
-                this.questions.push({
-                    id: i,
-                });
+            if (this.testTitle !== '') {
+                this.errorTitle = false;
+                this.amountOfAdded = 0;
+                this.addedQuestions = [];
+                this.questions = [];
+                for (let i = 0; i < this.countOfQuestions; i++) {
+                    this.questions.push({
+                        id: i,
+                    });
+                }
+            }
+            else {
+                this.errorTitle = true;
             }
         },
         saveQuestion(id, name, type, variants_of_answer, answer_01_type, answer_2_type, hints, score) {

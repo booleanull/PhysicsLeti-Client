@@ -1,0 +1,8 @@
+div#nav{
+    font-weight: bold;
+    background: #3F4E67;
+    max-height: 75px;
+    color: white;
+    display: flex;
+    justify-content: flex-end;
+}

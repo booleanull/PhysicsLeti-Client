@@ -8,16 +8,31 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="css/createTest.css">
 </head>
 <body>
 
 <div id="app">
     <v-app v-if="userType==='2'">
+        <v-row id="nav">
+            <v-col sm="3">
+                <span>Тесты:</span>
+            </v-col>
+            <v-col sm="3">
+                <v-btn @click="showAllTests">Созданные тесты</v-btn>
+            </v-col>
+        </v-row>
+        <v-container v-if="showTests">
+            <v-card v-for="test in allTests" class="my-3">
+                <v-card-text style="color: black">
+                    <div><span style="font-weight: bold;">Название Теста: </span> {{ test.title }}</div>
+                    <div><span style="font-weight: bold;">Ссылка на тест: </span> {{ test.url }}</div>
+                    <v-btn style="font-size: 0.7rem; color: red" class="my-2" @click="deleteTest(test.id)">Удалить тест</v-btn>
+                </v-card-text>
+            </v-card>
+        </v-container>
         <v-container v-if="!sended">
-            <v-row>
-                Создание теста:
-            </v-row>
+            <v-alert v-if="errorTitle" type="warning"> Введите название теста </v-alert>
             <v-row>
                 <v-col>
                     <v-text-field label="Название теста" v-model="testTitle"></v-text-field>
@@ -25,7 +40,7 @@
             </v-row>
             <v-row>
                 <v-col>
-                    <v-text-field label="Кол-во вопросов в тесте" type="number" v-model="countOfQuestions"></v-text-field>
+                    <v-text-field label="Количество вопросов в тесте" type="number" v-model="countOfQuestions"></v-text-field>
                 </v-col>
             </v-row>
             <v-row>
