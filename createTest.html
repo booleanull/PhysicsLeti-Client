@@ -13,8 +13,11 @@
 <body>
 
 <div id="app">
-    <v-app v-if="userType==='2'">
+    <v-app v-if="userType==='2' || userType==='1'">
         <v-row id="nav">
+            <v-col sm="5">
+                <v-btn @click="goToAdminPanel">Вернуться назад</v-btn>
+            </v-col>
             <v-col sm="3">
                 <span>Тесты:</span>
             </v-col>
@@ -26,7 +29,7 @@
             <v-card v-for="test in allTests" class="my-3">
                 <v-card-text style="color: black">
                     <div><span style="font-weight: bold;">Название Теста: </span> {{ test.title }}</div>
-                    <div><span style="font-weight: bold;">Ссылка на тест: </span> {{ test.url }}</div>
+                    <div><span style="font-weight: bold;">Ссылка на тест: </span> {{ getFullUrl(test.url) }}</div>
                     <v-btn style="font-size: 0.7rem; color: red" class="my-2" @click="deleteTest(test.id)">Удалить тест</v-btn>
                 </v-card-text>
             </v-card>
@@ -64,7 +67,7 @@
         </v-container>
         <v-container v-else="">
             <label for="url">Ссылка на тест</label>
-            <v-text-field :value="url" id="url"></v-text-field>
+            <v-text-field :value="getFullUrl()" id="url"></v-text-field>
         </v-container>
     </v-app>
 </div>
@@ -86,7 +89,8 @@
     firebase.initializeApp(firebaseConfig);
 </script>
 <script src="http://wzrd.in/standalone/uuid%2Fv4@latest"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
+<!--<script defer src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>-->
 <script defer src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
 <script defer src="js/createTest.js"></script>
 </body>

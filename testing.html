@@ -35,7 +35,7 @@
         <p v-if="Boolean(currentHint)" class="green--text text--lighten-1">
           {{ currentHint }}
         </p>
-  
+
         <div v-if="isType(0)">
           <v-radio-group v-model="answers[currentQuestionNumber - 1]">
             <v-radio
@@ -47,9 +47,9 @@
             </v-radio>
           </v-radio-group>
         </div>
-  
+
         <div v-else-if="isType(1)">
-          <v-checkbox 
+          <v-checkbox
             v-for="(variant, index) of currentQuestion.variants_of_answer"
             :key="index"
             v-model="answers[currentQuestionNumber - 1]"
@@ -57,16 +57,16 @@
             :value="index">
           </v-checkbox>
         </div>
-  
+
         <div v-else-if="isType(2)">
-          <v-text-field 
+          <v-text-field
             class="mt-4 mb-4"
             v-model="answers[currentQuestionNumber - 1]"
             outlined
             label="Введите  ответ">
           </v-text-field>
         </div>
-  
+
         <div class="text-center">
           <v-pagination
             v-model="currentQuestionNumber"
@@ -104,7 +104,8 @@
     };
     firebase.initializeApp(firebaseConfig);
 </script>
-<script defer src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!--<script defer src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
 <script defer src="js/testing.js"></script>
 </body>

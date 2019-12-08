@@ -115,7 +115,7 @@ let app = new Vue({
             return uuidv4() + '_' + this.testTitle;
         },
         url() {
-            return `./testing.html?id=${this.id}`;
+            return `/testing.html?id=${this.id}`;
         },
         userType() {
             return localStorage.getItem('userType');
@@ -127,6 +127,16 @@ let app = new Vue({
     },
 
     methods: {
+        getFullUrl(url) {
+            if (url) return `${location.host}${url}`;
+            else return `${location.host}${this.url}`
+        },
+
+        goToAdminPanel() {
+            if (this.userType=== '1') location.assign('./teacher.html');
+            if (this.userType=== '2') location.assign('./admin.html');
+        },
+
         deleteTest(id) {
             firebase.database().ref(`/tests/${id}`).remove();
 
