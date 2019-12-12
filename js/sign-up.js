@@ -1,6 +1,6 @@
 var teacher = document.getElementById('teacher');
 var divNumber = document.getElementById('isStudent');
-const URL = 'http://localhost:8080';
+const URL = 'http://83.166.240.14:8080';
 var type_tmp = 0;
 
 function showNumber() {

@@ -2,7 +2,7 @@ var form = document.querySelector('form');
 var h2 = document.querySelector('h2');
 var link = document.createElement('div');
 var forget = document.querySelector('.forget');
-const URL = 'http://localhost:8080';
+const URL = 'http://83.166.240.14:8080';
 
 link.innerHTML = '<a href="index.html"> Вернуться на страницу авторизации</a>';
 link.style.textAlign = 'center';
