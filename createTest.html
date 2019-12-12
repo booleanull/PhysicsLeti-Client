@@ -46,7 +46,7 @@
             </v-row>
             <v-row v-for="question in questions" :key="question.id" :q_id="question.id">
                 <v-col>
-                    <question @save-question="saveQuestion" :q_id="question.id"></question>
+                    <question @save-question="saveQuestion" :q_id="question.id" :test_url="testIdToEdit"></question>
                 </v-col>
             </v-row>
             <div v-if="questions.length">
@@ -82,8 +82,8 @@
     firebase.initializeApp(firebaseConfig);
 </script>
 <script src="./js/uuid4.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
-<!--<script defer src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>-->
+<!--<script defer src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>-->
+<script defer src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
 <script defer src="js/createTest.js"></script>
 </body>
