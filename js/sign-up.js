@@ -44,7 +44,6 @@ function ajax_post(url)
     if(data !== undefined) {
 
         var jsonToSend = JSON.stringify(takeData(), null, ' ');
-        console.log(jsonToSend);
 
         xmlhttp.open("POST", url, true);
         xmlhttp.setRequestHeader("Content-Type", "application/json");

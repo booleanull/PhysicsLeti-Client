@@ -27,7 +27,6 @@ function ajax_post(url)
     var xmlhttp = new XMLHttpRequest();
 
     var jsonToSend = JSON.stringify(takeData(), null, ' ');
-    console.log(jsonToSend);
 
     xmlhttp.open("POST", url, true);
     xmlhttp.setRequestHeader("Content-Type", "application/json");
@@ -42,7 +41,6 @@ function ajax_post(url)
             try {
                 var data = JSON.parse(xmlhttp.responseText);
                 if (data.status != "error") {
-                    console.log(data.token);
                     saveToken(data.token, data.type, data.id, data.name);
                     switch (data.type) {
                         case 0:
