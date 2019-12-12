@@ -4,11 +4,27 @@ const URL = 'http://83.166.240.14:8080';
 window.onload = onload_page();
 
 function onload_page() {
-    ajax_post(`${URL}/api/lab/my`, null, function () {
+    ajax_post(`${URL}/me`, null, function () {
         if (xmlHttp.status === 200 && xmlHttp.readyState === 4) {
             try {
                 let data = JSON.parse(xmlHttp.responseText);
-                update_list(data.types)
+                document.getElementById('mylab').innerHTML =
+                    '<br>' +
+                    '<h5>'+ data.firstName + ' ' + data.lastName + '</h5>' +
+                    'Группа: ' + data.groupNumber +
+                '<p>Почта: ' + data.email + '</p>'
+                ajax_post(`${URL}/api/lab/my`, null, function () {
+                    if (xmlHttp.status === 200 && xmlHttp.readyState === 4) {
+                        try {
+                            let data = JSON.parse(xmlHttp.responseText);
+                            update_list(data.types)
+                        } catch (err) {
+                            console.log(err.message + " in " + xmlHttp.responseText);
+                        }
+                    } else {
+                        console.log("error");
+                    }
+                });
             } catch (err) {
                 console.log(err.message + " in " + xmlHttp.responseText);
             }
@@ -137,5 +153,5 @@ function update_list(data) {
     });
     navigation += '</div>\n' +
         '                </div>'
-    document.getElementById('mylab').innerHTML = navigation
+    document.getElementById('mylab').innerHTML += navigation
 }
