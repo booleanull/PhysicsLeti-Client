@@ -18,9 +18,13 @@ Vue.component('question', {
     methods: {
         saveQuestion() {
             if (this.name && this.type && (this.variants_of_answer && this.answer_01_type || this.answer_2_type) && this.score) {
-                this.showAlert = true;
-                this.showError = false;
-                this.$emit('save-question', this.q_id, this.name, this.type, this.variants_of_answer, this.answer_01_type, this.answer_2_type, this.hints, this.score);
+                if (Number(this.score) > 0) {
+                    this.showAlert = true;
+                    this.showError = false;
+                    this.$emit('save-question', this.q_id, this.name, this.type, this.variants_of_answer, this.answer_01_type, this.answer_2_type, this.hints, this.score);
+                } else {
+                    alert('Балл за вопрос должен быть положительным числом');
+                }
             }
             else {
                 this.showError = true;
@@ -86,7 +90,7 @@ Vue.component('question', {
                             </ul>
                          </div>  
                                                 
-                         <v-text-field v-model="score" label="Максимальный балл за ответ на вопрос"></v-text-field>
+                         <v-text-field v-model="score" type="number" label="Максимальный балл за ответ на вопрос"></v-text-field>
                          <v-alert :value="showAlert" color="success">Вопрос добавлен в тест</v-alert>
                          <v-alert :value="showError" color="warning">Ошибка, есть пустые обязательные поля</v-alert>
                          <v-btn @click="saveQuestion" color="success">Добавить вопрос</v-btn>
@@ -112,7 +116,7 @@ let app = new Vue({
 
     computed: {
         id() {
-            return uuidv4() + '_' + this.testTitle;
+            return uuidv4();
         },
         url() {
             return `/testing.html?id=${this.id}`;
@@ -120,11 +124,15 @@ let app = new Vue({
         userType() {
             return localStorage.getItem('userType');
         },
+        showingText () {
+            return (this.showTests) ? 'Скрыть тесты' : 'Показать тесты';
+        }
     },
 
     created() {
-      if (this.userType !== '2') location.assign('/index.html');
+        if (this.userType === '0') location.assign('/student.html');
     },
+
 
     methods: {
         getFullUrl(url) {
@@ -132,7 +140,7 @@ let app = new Vue({
             else return `${location.host}${this.url}`
         },
 
-        goToAdminPanel() {
+        goBack() {
             if (this.userType=== '1') location.assign('./teacher.html');
             if (this.userType=== '2') location.assign('./admin.html');
         },
@@ -153,6 +161,7 @@ let app = new Vue({
 
         showAllTests() {
             this.showTests = !this.showTests;
+            this.allTests = [];
             let allTests = this.allTests;
             firebase.database().ref('/tests').once('value').then(function(data) {
                 let tests = data.val();
@@ -200,13 +209,16 @@ let app = new Vue({
         },
 
         async sendTest() {
-            await firebase.database().ref(`tests/${this.id}`).set({
-                title: this.testTitle,
-                questions: this.questions,
-                url: this.url,
-            });
-            console.log('Sended!');
-            this.sended = true;
+            if (this.testTitle) {
+                await firebase.database().ref(`tests/${this.id}`).set({
+                    title: this.testTitle,
+                    questions: this.questions,
+                    url: this.url,
+                });
+                console.log('Sended!');
+                this.sended = true;
+            }
+            else this.showError = true;
         }
     },
 });

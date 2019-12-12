@@ -81,9 +81,11 @@
 
     <v-container v-else>
       <div class="text-center">
-        <h1>Ваш результат: {{ getScore }}</h1>
-        <h3>При подсчете учитывались предыдущие попытки</h3>
-      <div class="text-center">
+        <h1>Ваш результат: {{ ((getScore / maxScore)*100).toFixed(1) }} % от {{ maxScore }}</h1>
+        <div class="text-center mt-4">
+          <v-btn color="primary" @click="reload">Попробовать ещё раз</v-btn>
+        </div>
+      </div>
     </v-container>
   </v-app>
 </div>
