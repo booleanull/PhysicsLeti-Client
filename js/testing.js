@@ -17,6 +17,14 @@ var app = new Vue({
   },
 
   computed: {
+    coef() {
+      return 1.00 - (0.25 * ( (this.userResults && this.userResults.tryings) || 0 ));
+    },
+
+    maxScore() {
+      return this.test.questions.map(q => q.score).reduce((prev, curr) => prev + curr);
+    },
+
     currentQuestion() {
       return this.test ? this.test.questions[this.currentQuestionNumber - 1] : null;
     },
@@ -46,14 +54,15 @@ var app = new Vue({
       this.test.questions.forEach((q, i) => {
         if (this.correctQuestionsForSession[i]) sum += Number(q.score);
       });
-      
-      const coef = 1.00 - (0.25 * ( (this.userResults && this.userResults.tryings) || 0 ));
-      
-      return sum * coef;
+
+      const result = sum * this.coef;
+      return result > 0 ? result : 0;
     },
   },
 
   methods: {
+    reload: () => location.reload(),
+
     getTest() {
       const url = new URL(window.location.href);
       const testId = url.searchParams.get('id');
@@ -77,7 +86,7 @@ var app = new Vue({
 
       results.tryings = this.userResults && this.userResults.tryings ? this.userResults.tryings + 1 : 1;
       results.totalScore = this.getScore;
-      
+
       results.correctlyAnswers = this.userResults && this.userResults.correctlyAnswers || Array(this.test.questions.length).fill(0);
       results.correctlyAnswers = results.correctlyAnswers.map((item, index) => {
         if (item === true || this.correctQuestionsForSession[index]) return true;

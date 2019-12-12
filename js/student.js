@@ -1,6 +1,6 @@
 let xmlHttp = new XMLHttpRequest();
 let labworks = undefined;
-const URL = 'http://localhost:8080';
+const URL = 'http://83.166.240.14:8080';
 // When our page is Ready
 window.onload = onload_page();
 

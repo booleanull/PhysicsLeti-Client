@@ -1,5 +1,5 @@
 var xml = new XMLHttpRequest();
-const URL = 'http://localhost:8080';
+const URL = 'http://83.166.240.14:8080';
 var upd_id;
 var create_id;
 
