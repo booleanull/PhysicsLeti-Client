@@ -23,19 +23,10 @@
                 <span>Тесты:</span>
             </v-col>
             <v-col sm="3">
-                <v-btn @click="showAllTests">{{ showingText }}</v-btn>
+                <v-btn @click="showAllTests">Показать все тесты</v-btn>
             </v-col>
         </v-row>
-        <v-container v-if="showTests">
-            <v-card v-for="test in allTests" class="my-3">
-                <v-card-text v-if="allTests" style="color: black">
-                    <div><span style="font-weight: bold;">Название Теста: </span> {{ test.title }}</div>
-                    <div><span style="font-weight: bold;">Ссылка на тест: </span> {{ getFullUrl(test.url) }}</div>
-                    <v-btn style="font-size: 0.7rem; color: red" class="my-2" @click="deleteTest(test.id)">Удалить тест</v-btn>
-                </v-card-text>
-                <v-card-text v-else> <div style="font-weight: bold;">Список Тестов пуст</div> </v-card-text>
-            </v-card>
-        </v-container>
+
         <v-container v-if="!sended">
             <v-alert v-if="errorTitle" type="warning"> Введите название теста </v-alert>
             <v-row>

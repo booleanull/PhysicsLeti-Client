@@ -110,7 +110,6 @@ let app = new Vue({
         addedQuestions: [],
         sended: false,
         allTests: [],
-        showTests: false,
         errorTitle: false,
     },
 
@@ -124,9 +123,6 @@ let app = new Vue({
         userType() {
             return localStorage.getItem('userType');
         },
-        showingText () {
-            return (this.showTests) ? 'Скрыть тесты' : 'Показать тесты';
-        }
     },
 
     created() {
@@ -145,30 +141,9 @@ let app = new Vue({
             if (this.userType=== '2') location.assign('./admin.html');
         },
 
-        deleteTest(id) {
-            firebase.database().ref(`/tests/${id}`).remove();
-
-            this.allTests = [];
-
-            let allTests = this.allTests;
-            firebase.database().ref('/tests').once('value').then(function(data) {
-                let tests = data.val();
-                for (let item in tests) {
-                    allTests.push({id: item, title: tests[item].title, url: tests[item].url})
-                }
-            });
-        },
 
         showAllTests() {
-            this.showTests = !this.showTests;
-            this.allTests = [];
-            let allTests = this.allTests;
-            firebase.database().ref('/tests').once('value').then(function(data) {
-                let tests = data.val();
-                for (let item in tests) {
-                    allTests.push({id: item, title: tests[item].title, url: tests[item].url})
-                }
-            });
+            location.assign('./viewTests.html');
         },
 
         createQuestions() {

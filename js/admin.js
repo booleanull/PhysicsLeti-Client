@@ -26,6 +26,26 @@ function onload_page() {
         }
     };
     xmlHttp.send();
+
+    const xmlHttp1 = new XMLHttpRequest();
+    xmlHttp1.open("POST", `${URL}/api/all`, true);
+    xmlHttp1.setRequestHeader("Content-Type", "application/json");
+
+    xmlHttp1.setRequestHeader("token", localStorage.getItem('token'));
+
+    xmlHttp1.onload = function () {
+        if (xmlHttp1.status === 200 && xmlHttp1.readyState === 4) {
+            try {
+                let data = JSON.parse(xmlHttp1.responseText);
+                update_remove(data.users)
+            } catch (err) {
+                console.log(err.message + " in " + xmlHttp1.responseText);
+            }
+        } else {
+            console.log("error");
+        }
+    };
+    xmlHttp1.send();
 }
 
 function slide_labs() {
@@ -85,6 +105,22 @@ function send_accept(id, type) {
     } else {
         url = `${URL}/api/reject`
     }
+
+    ajax_post(url, jsonObject, function () {
+        if (xml.status === 200 && xml.readyState === 4) {
+            onload_page()
+        } else {
+            console.log("error");
+        }
+    })
+}
+
+function send_remove(id) {
+    let jsonObject = {};
+    jsonObject.id = id;
+
+    let url = "";
+    url = `${URL}/api/remove`;
 
     ajax_post(url, jsonObject, function () {
         if (xml.status === 200 && xml.readyState === 4) {
@@ -283,6 +319,29 @@ function update_list(data) {
             '</button>' +
             '<button class="btn-dec btn-sm btn btn-secondary btn-smbtn-secondary float-right" onclick="send_accept(' + it.id + ', false)">' +
             'Отклонить' +
+            '</button>' +
+            '</div>' +
+            '</div>'
+    });
+}
+
+function update_remove(data) {
+    if (data.length === 0) {
+        document.getElementById('inner_container').innerHTML += '<h5>Пользователей нет</h5>';
+    }
+    data.forEach(function (it) {
+        let typeString = "";
+        if (it.type === 0) {
+            typeString = "(" + it.groupNumber + ")";
+        } else {
+            typeString = "(Преподаватель)"
+        }
+
+        document.getElementById('inner_container').innerHTML += '<div class="card">\n' +
+            '<div class="card-body">' +
+            '<b class="align-middle">' + it.firstName + ' ' + it.lastName + ' ' + typeString + '</b>' +
+            '<button class="btn-dec btn-sm btn btn-secondary btn-smbtn-secondary float-right" onclick="send_remove(' + it.id + ')">' +
+            'Удалить' +
             '</button>' +
             '</div>' +
             '</div>'
