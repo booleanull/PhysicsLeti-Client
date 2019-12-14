@@ -116,3 +116,7 @@ function update_list(data) {
         '                </div>'
     document.getElementById('list').innerHTML += navigation
 }
+
+function openTests() {
+    location.assign('./createTest.html');
+}

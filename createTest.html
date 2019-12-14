@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Physics Tests</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="shortcut icon" href="https://img.icons8.com/nolan/64/000000/physics.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/createTest.css">
+</head>
+<body>
+
+<div id="app">
+    <v-app v-if="userType==='2' || userType==='1'">
+        <v-row id="nav">
+            <v-col sm="5">
+                <v-btn @click="goBack">Вернуться назад</v-btn>
+            </v-col>
+            <v-col sm="3">
+                <span>Тесты:</span>
+            </v-col>
+            <v-col sm="3">
+                <v-btn @click="showAllTests">Показать все тесты</v-btn>
+            </v-col>
+        </v-row>
+
+        <v-container v-if="!sended">
+            <v-alert v-if="errorTitle" type="warning"> Введите название теста </v-alert>
+            <v-row>
+                <v-col>
+                    <v-text-field label="Название теста" v-model="testTitle"></v-text-field>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col>
+                    <v-text-field label="Количество вопросов в тесте" type="number" v-model="countOfQuestions"></v-text-field>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col>
+                    <v-btn color="primary" @click="createQuestions">Подтвердить</v-btn>
+                </v-col>
+            </v-row>
+            <v-row v-for="question in questions" :key="question.id" :q_id="question.id">
+                <v-col>
+                    <question @save-question="saveQuestion" :q_id="question.id" :test_url="testIdToEdit"></question>
+                </v-col>
+            </v-row>
+            <div v-if="questions.length">
+                <v-row>
+                    <v-alert style="color: white" color="primary">Добавленно вопросов: {{ amountOfAdded }}</v-alert>
+                </v-row>
+                <v-row>
+                    <v-btn color="primary" @click="sendTest">Сохранить тест</v-btn>
+                </v-row>
+            </div>
+        </v-container>
+        <v-container v-else="">
+            <label for="url">Ссылка на тест</label>
+            <v-text-field :value="getFullUrl()" id="url"></v-text-field>
+        </v-container>
+    </v-app>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-database.js"></script>
+
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyCThJqusDZuXq-6I5yhY59-3tSUv6Dt3-U",
+        authDomain: "physicsletitests.firebaseapp.com",
+        databaseURL: "https://physicsletitests.firebaseio.com",
+        projectId: "physicsletitests",
+        storageBucket: "physicsletitests.appspot.com",
+        messagingSenderId: "243413212508",
+        appId: "1:243413212508:web:460185236af63c80abb599",
+        measurementId: "G-BLHBX5X1K1"
+    };
+    firebase.initializeApp(firebaseConfig);
+</script>
+<script src="./js/uuid4.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
+<!--<script defer src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>-->
+<script defer src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+<script defer src="js/createTest.js"></script>
+</body>
+</html>

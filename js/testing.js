@@ -63,7 +63,6 @@ var app = new Vue({
       });
 
       const result = sum * this.coef;
-      console.log(result, sum);
       return result > 0 ? result : 0;
     },
 
