@@ -9,7 +9,7 @@ var app = new Vue({
     testFinished: false,
     test: null,
     answers: [],
-    currentQuestionNumber: 1,
+    // currentQuestionNumber: 1,
     userId: window.localStorage.getItem('userId'),
     correctQuestionsForSession: [],
     userResult: null,
@@ -18,35 +18,42 @@ var app = new Vue({
 
   computed: {
     coef() {
-      return 1.00 - (0.25 * ( (this.userResults && this.userResults.tryings) || 0 ));
+      return 1.00 - (0.25 * ((this.userResults && this.userResults.tryings) || 0 ));
     },
 
     maxScore() {
-      return this.test.questions.map(q => q.score).reduce((prev, curr) => prev + curr);
+      return this.test.questions.map(q => q.score).reduce((prev, curr) => Number(prev) + Number(curr));
     },
 
-    currentQuestion() {
-      return this.test ? this.test.questions[this.currentQuestionNumber - 1] : null;
-    },
+    userResults() {
+      return (this.test && this.test.results && this.test.results[this.userId]) || null;
+    }
+  },
 
-    currentHint() {
-      if (!this.currentQuestion.hints) return null;
-
-      if (this.userResults && this.userResults.correctlyAnswers) {
-        if (
-          typeof this.userResults.correctlyAnswers[this.currentQuestionNumber - 1] === 'number' &&
-          this.userResults.correctlyAnswers[this.currentQuestionNumber - 1] !== 0
-        ) {
-          const index = this.userResults.correctlyAnswers[this.currentQuestionNumber - 1] - 1;
-          return this.currentQuestion.hints[index]
-        }
+  methods: {
+    getHint(question, index) {
+      if (
+        question.hints &&
+        this.userResults &&
+        this.userResults.correctlyAnswers &&
+        typeof this.userResults.correctlyAnswers[index] === 'number' &&
+        this.userResults.correctlyAnswers[index] !== 0
+      ) {
+        const hintIndex = this.userResults.correctlyAnswers[index] - 1;
+        return question.hints[hintIndex];
       }
 
       return null
     },
 
-    userResults() {
-      return (this.test && this.test.results && this.test.results[this.userId]) || null;
+    reload: () => location.reload(),
+
+    isType(question, index, type) {
+      if (question.type === '1' && !this.answers[index]) {
+        this.answers[index] = [];
+      }
+
+      return question.type === type;
     },
 
     getScore() {
@@ -58,10 +65,6 @@ var app = new Vue({
       const result = sum * this.coef;
       return result > 0 ? result : 0;
     },
-  },
-
-  methods: {
-    reload: () => location.reload(),
 
     getTest() {
       const url = new URL(window.location.href);
@@ -82,11 +85,13 @@ var app = new Vue({
     },
 
     finishTest() {
+      window.scrollTo(0, 0);
+      this.handleResult();
       const results = {};
 
       results.tryings = this.userResults && this.userResults.tryings ? this.userResults.tryings + 1 : 1;
-      results.totalScore = this.getScore;
-
+      results.totalScore = this.getScore();
+      
       results.correctlyAnswers = this.userResults && this.userResults.correctlyAnswers || Array(this.test.questions.length).fill(0);
       results.correctlyAnswers = results.correctlyAnswers.map((item, index) => {
         if (item === true || this.correctQuestionsForSession[index]) return true;
@@ -103,36 +108,35 @@ var app = new Vue({
       this.testFinished = true;
     },
 
-    isType(type) {
-      if (String(this.currentQuestion.type) === '1' && !this.answers[this.currentQuestionNumber - 1]) {
-        this.answers[this.currentQuestionNumber - 1] = [];
+    goBack() {
+      switch(localStorage.getItem('userType')) {
+        case '0':
+          location.assign('./student.html');
+          break;
+        case '1':
+          location.assign('./teacher.html');
+          break;
+        case '2':
+          location.assign('./admin.html');
+          break;
       }
-
-      return String(this.currentQuestion.type) === String(type);
     },
-  },
 
-  watch: {
-    answers: {
-      handler() {
-        switch (this.currentQuestion.type) {
+    handleResult() {
+      this.test.questions.forEach((question, index) => {
+        switch (question.type) {
           case '0':
-            this.correctQuestionsForSession[this.currentQuestionNumber - 1] =
-              String(this.answers[this.currentQuestionNumber - 1]) === String(this.currentQuestion.answer[0]);
+            this.correctQuestionsForSession[index] = String(this.answers[index]) === String(question.answer[0]);
             break;
           case '1':
             const isSetsEqual = (a, b) => a.size === b.size && [...a].every(value => b.has(value));
-            this.correctQuestionsForSession[this.currentQuestionNumber - 1] =
-              isSetsEqual(new Set(this.answers[this.currentQuestionNumber - 1]), new Set(this.currentQuestion.answer));
+            this.correctQuestionsForSession[index] = isSetsEqual(new Set(this.answers[index]), new Set(question.answer));
             break;
           case '2':
-            this.correctQuestionsForSession[this.currentQuestionNumber - 1] =
-              this.answers[this.currentQuestionNumber - 1].toLowerCase().trim() === this.currentQuestion.answer.toLowerCase().trim();
+            this.correctQuestionsForSession[index] = this.answers[index] && this.answers[index].toLowerCase().trim() === question.answer.toLowerCase().trim();
             break;
-        }
-      },
-
-      deep: true
+        };
+      });
     }
   },
 
