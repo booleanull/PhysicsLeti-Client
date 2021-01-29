@@ -18,7 +18,7 @@
       <h1>{{ error }}</h1>
     </div>
 
-    <v-container  v-else-if="!testStarted">
+    <v-container  v-else-if="!testStarted && test">
       <div class="text-center mb-4">
         <h1>{{ test.title }}</h1>
       </div>
@@ -28,16 +28,16 @@
     </v-container>
 
     <v-container v-else-if="!testFinished">
-      <v-card class="pa-4">
+      <v-card class="pa-4 ma-2" v-for="(currentQuestion, currentQuestionNumber) of test.questions">
         <div>
           <h3>{{ currentQuestion.name }}</h3>
         </div>
-        <p v-if="Boolean(currentHint)" class="green--text text--lighten-1">
-          {{ currentHint }}
+        <p v-if="getHint(currentQuestion, currentQuestionNumber)" class="green--text text--lighten-1">
+          {{ getHint(currentQuestion, currentQuestionNumber) }}
         </p>
-
-        <div v-if="isType(0)">
-          <v-radio-group v-model="answers[currentQuestionNumber - 1]">
+  
+        <div v-if="isType(currentQuestion, currentQuestionNumber, '0')">
+          <v-radio-group v-model="answers[currentQuestionNumber]">
             <v-radio
               class="mb-4"
               v-for="(variant, index) of currentQuestion.variants_of_answer"
@@ -47,44 +47,88 @@
             </v-radio>
           </v-radio-group>
         </div>
-
-        <div v-else-if="isType(1)">
-          <v-checkbox
+  
+        <div class="pt-6" v-else-if="isType(currentQuestion, currentQuestionNumber, '1')">
+          <v-checkbox 
+            class="ma-0"
             v-for="(variant, index) of currentQuestion.variants_of_answer"
             :key="index"
-            v-model="answers[currentQuestionNumber - 1]"
+            v-model="answers[currentQuestionNumber]"
             :label="variant"
             :value="index">
           </v-checkbox>
         </div>
-
-        <div v-else-if="isType(2)">
-          <v-text-field
+  
+        <div v-else-if="isType(currentQuestion, currentQuestionNumber, '2')">
+          <v-text-field 
             class="mt-4 mb-4"
-            v-model="answers[currentQuestionNumber - 1]"
+            v-model="answers[currentQuestionNumber]"
+            clearable
             outlined
-            label="Введите  ответ">
+            label="Введите ответ">
           </v-text-field>
         </div>
-
-        <div class="text-center">
-          <v-pagination
-            v-model="currentQuestionNumber"
-            :length="test.questions.length"
-            :page="currentQuestionNumber"
-            :total-visible="test.questions.length">
-          </v-pagination>
-          <v-btn class="mt-2" color="error" @click="finishTest">Завершить прохождение</v-btn>
-        </div>
       </v-card>
+      <div class="text-center">
+        <v-btn class="mt-2" color="primary" @click="finishTest">Завершить прохождение</v-btn>
+      </div>
     </v-container>
 
     <v-container v-else>
-      <div class="text-center">
-        <h1>Ваш результат: {{ ((getScore / maxScore)*100).toFixed(1) }} % от {{ maxScore }}</h1>
+      <div class="text-center mb-4">
+        <h1>Ваш результат: {{ ((getScore() / maxScore)*100).toFixed(0) }}% от {{ maxScore }}</h1>
         <div class="text-center mt-4">
-          <v-btn color="primary" @click="reload">Попробовать ещё раз</v-btn>
+          <v-btn color="primary" @click="reload">Попробовать еще</v-btn>
         </div>
+        <div class="text-center mt-4">
+          <v-btn @click="goBack">На главную</v-btn>
+        </div>
+      </div>
+
+      <h3 class="mb-2">Ваши ответы:</h3>
+
+      <div class="pa-4 ma-2" v-for="(currentQuestion, currentQuestionNumber) of test.questions">
+        <div>
+          <h3 :class="{'red--text': !correctQuestionsForSession[currentQuestionNumber]}">{{ currentQuestion.name }}</h3>
+        </div>
+        <p v-if="getHint(currentQuestion, currentQuestionNumber)" class="green--text text--lighten-1">
+          {{ getHint(currentQuestion, currentQuestionNumber) }}
+        </p>
+        
+        <div v-if="isType(currentQuestion, currentQuestionNumber, '0')">
+          <v-radio-group v-model="answers[currentQuestionNumber]">
+            <v-radio
+              readonly
+              class="mb-4"
+              v-for="(variant, index) of currentQuestion.variants_of_answer"
+              :key="index"
+              :label="variant"
+              :value="index">
+            </v-radio>
+          </v-radio-group>
+        </div>
+  
+        <div class="pt-6" v-else-if="isType(currentQuestion, currentQuestionNumber, '1')">
+          <v-checkbox 
+            readonly
+            class="ma-0"
+            v-for="(variant, index) of currentQuestion.variants_of_answer"
+            :key="index"
+            v-model="answers[currentQuestionNumber]"
+            :label="variant"
+            :value="index">
+          </v-checkbox>
+        </div>
+  
+        <div v-else-if="isType(currentQuestion, currentQuestionNumber, '2')">
+          <v-text-field 
+            readonly
+            class="mt-4 mb-4"
+            v-model="answers[currentQuestionNumber]"
+            outlined>
+          </v-text-field>
+        </div>
+        <hr>
       </div>
     </v-container>
   </v-app>

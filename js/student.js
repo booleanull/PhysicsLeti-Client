@@ -155,3 +155,7 @@ function set_labwork(id) {
         })
     })
 }
+
+function openTests() {
+    location.assign('./viewTests.html');
+}

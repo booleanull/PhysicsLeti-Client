@@ -20,6 +20,11 @@ let app = new Vue({
 
 
     methods: {
+        editTest(url) {
+            const id = url.split('?')[1].split('=')[1];
+            location.assign(`/createTest.html?id=${id}`);
+        },
+
         getFullUrl(url) {
             if (url) return `${location.host}${url}`;
             else return `${location.host}${this.url}`
